@@ -15,7 +15,7 @@ class MotorDriver:
                  forward_scale: float = 1,
                  backward_scale: float = 1,
                  offset: float = 0,
-                 epsilon: float = 15
+                 epsilon: float = 0.15
                  ):
         """
         Creates driver and initialise GPIO for the motor
@@ -32,19 +32,22 @@ class MotorDriver:
         self._channel = channel
 
         # initialize properties
-        self.speed = speed
-        self.frequency = frequency
-        self.min_duty_cycle = min_duty_cycle
-        self.max_duty_cycle = max_duty_cycle
-        self.forward_scale = forward_scale
-        self.backward_scale = backward_scale
-        self.offset = offset
-        self.epsilon = epsilon
+        self._speed = speed
+        self._frequency = frequency
+        self._min_duty_cycle = min_duty_cycle
+        self._max_duty_cycle = max_duty_cycle
+        self._forward_scale = forward_scale
+        self._backward_scale = backward_scale
+        self._offset = offset
+        self._epsilon = epsilon
 
         # setup GPIO
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(channel, GPIO.OUT)
         self._pwm = GPIO.PWM(channel, frequency)
+        self._pwm.start(0)
+
+        self._update_duty_cycle()
 
     def cleanup(self):
         """ Stops the motor and cleans up GPIO configuration for motor channel """
@@ -54,7 +57,7 @@ class MotorDriver:
     def _update_duty_cycle(self):
         """ Updates PWN duty cycle based on driver configuration. If speed is below epsilon stops motor. """
         if abs(self.speed) <= self.epsilon:
-            self._pwm.stop()
+            self._pwm.ChangeDutyCycle(0)
             return
 
         # calculate speed
@@ -70,7 +73,7 @@ class MotorDriver:
         duty_cycle += speed * (self.max_duty_cycle - self.min_duty_cycle) / 2
 
         # update PWM
-        self._pwm.start(duty_cycle)
+        self._pwm.ChangeDutyCycle(duty_cycle)
 
     @property
     def speed(self) -> float:
