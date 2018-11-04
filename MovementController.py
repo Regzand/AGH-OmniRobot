@@ -72,9 +72,9 @@ class RetardedMovementController(MovementController):
 
     def __init__(self):
 
-        motor000 = MotorDriver(18) # 3
-        motor120 = MotorDriver(12) # 2
-        motor240 = MotorDriver(16) # 1
+        motor000 = MotorDriver(8)  # 1
+        motor120 = MotorDriver(10) # 2
+        motor240 = MotorDriver(12) # 3
 
         super().__init__(motor000, motor120, motor240)
 
