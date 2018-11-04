@@ -14,17 +14,17 @@ class MovementController:
     """
 
     def __init__(self,
-                 motor0: MotorDriver,
+                 motor000: MotorDriver,
                  motor120: MotorDriver,
                  motor240: MotorDriver
                  ):
         """
         Creates the controller of three already calibrated motors.
-        :param motor0: motor aligned with the 0 direction
+        :param motor000: motor aligned with the 0 direction
         :param motor120: motor rotated by 120 degrees clockwise relative to the 0 direction.
         :param motor240: motor rotated by 240 degrees clockwise relative to the 0 direction.
         """
-        self._motor0 = motor0
+        self._motor000 = motor000
         self._motor120 = motor120
         self._motor240 = motor240
 
@@ -41,7 +41,7 @@ class MovementController:
     def speed(self, speed: float):
         self._speed = speed
 
-        self._motor0.speed = 0
+        self._motor000.speed = 0
         self._motor120.speed = 0
         self._motor240.speed = 0
 
@@ -57,7 +57,7 @@ class MovementController:
     def direction(self, direction: float):
         self._direction = direction
 
-        self._motor0.speed = math.cos(self._direction) * self._speed
+        self._motor000.speed = math.cos(self._direction) * self._speed
         self._motor120.speed = math.cos(self._direction - 120) * self._speed
         self._motor240.speed = math.cos(self._direction - 240) * self._speed
 
@@ -72,11 +72,11 @@ class RetardedMovementController(MovementController):
 
     def __init__(self):
 
-        motor0 = MotorDriver(18) # 3
+        motor000 = MotorDriver(18) # 3
         motor120 = MotorDriver(12) # 2
         motor240 = MotorDriver(16) # 1
 
-        super().__init__(motor0, motor120, motor240)
+        super().__init__(motor000, motor120, motor240)
 
 
 
