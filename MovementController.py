@@ -31,15 +31,19 @@ class MovementController:
         # Initial properties setup
         self._speed = 0.
         self._direction = 0.
+        self._rotation = 0.
 
     def _update_motors(self):
-        self._motor000.speed = self.speed * math.sin(self.direction - math.pi / 3 * 0)
-        self._motor120.speed = self.speed * math.sin(self.direction - math.pi / 3 * 2)
-        self._motor240.speed = self.speed * math.sin(self.direction - math.pi / 3 * 4)
+        self._motor000.speed = self.speed * math.sin(self.direction - math.pi / 3 * 0) + self.rotation
+        self._motor120.speed = self.speed * math.sin(self.direction - math.pi / 3 * 2) + self.rotation
+        self._motor240.speed = self.speed * math.sin(self.direction - math.pi / 3 * 4) + self.rotation
 
     @property
     def speed(self) -> float:
-        """ Gets or sets the speed of the robot. """
+        """
+        Gets or sets the speed of the robot.
+        The value should be within range [-1,1]
+        """
         return self._speed
 
     @speed.setter
@@ -60,8 +64,22 @@ class MovementController:
         self._direction = direction
         self._update_motors()
 
+    @property
+    def rotation(self) -> float:
+        """
+        Gets or sets the rotation speed of the robot.
+        The value should be within range [-1,1]
+        """
+        return self._rotation
+
+    @rotation.setter
+    def rotation(self, rotation: float):
+        self._rotation = rotation
+        self._update_motors()
+
     def stop(self):
         self.speed = 0
+        self.rotation = 0
 
     def cleanup(self):
         self._motor000.cleanup()
