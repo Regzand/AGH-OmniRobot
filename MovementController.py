@@ -29,8 +29,13 @@ class MovementController:
         self._motor240 = motor240
 
         # Initial properties setup
-        self.speed = 0.
+        self._speed = 0.
         self._direction = 0.
+
+    def _update_motors(self):
+        self._motor000.speed = self.speed * math.sin(self.direction - math.pi / 3 * 0)
+        self._motor120.speed = self.speed * math.sin(self.direction - math.pi / 3 * 2)
+        self._motor240.speed = self.speed * math.sin(self.direction - math.pi / 3 * 4)
 
     @property
     def speed(self) -> float:
@@ -40,10 +45,7 @@ class MovementController:
     @speed.setter
     def speed(self, speed: float):
         self._speed = speed
-
-        self._motor000.speed = 0
-        self._motor120.speed = 0
-        self._motor240.speed = 0
+        self._update_motors()
 
     @property
     def direction(self) -> float:
@@ -56,13 +58,15 @@ class MovementController:
     @direction.setter
     def direction(self, direction: float):
         self._direction = direction
-
-        self._motor000.speed = math.cos(self._direction) * self._speed
-        self._motor120.speed = math.cos(self._direction - 120) * self._speed
-        self._motor240.speed = math.cos(self._direction - 240) * self._speed
+        self._update_motors()
 
     def stop(self):
         self.speed = 0
+
+    def cleanup(self):
+        self._motor000.cleanup()
+        self._motor120.cleanup()
+        self._motor240.cleanup()
 
 
 class RetardedMovementController(MovementController):
@@ -77,7 +81,3 @@ class RetardedMovementController(MovementController):
         motor240 = MotorDriver(12) # 3
 
         super().__init__(motor000, motor120, motor240)
-
-
-
-
