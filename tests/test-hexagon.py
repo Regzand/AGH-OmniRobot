@@ -1,4 +1,4 @@
-from MovementController import RetardedMovementController
+from robot import RetardedMovementController
 import time
 import math
 
@@ -9,7 +9,7 @@ mc.direction = 0
 
 while True:
 	time.sleep(1)
-	mc.direction += math.pi / 2
+	mc.direction += math.pi / 3
 
 mc.stop()
 mc.cleanup()

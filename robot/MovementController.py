@@ -1,6 +1,6 @@
 import math
 
-from MotorDriver import MotorDriver
+from .drivers import MotorDriver
 
 
 class MovementController:
@@ -94,8 +94,8 @@ class RetardedMovementController(MovementController):
 
     def __init__(self):
 
-        motor000 = MotorDriver(8)  # 1
-        motor120 = MotorDriver(10) # 2
-        motor240 = MotorDriver(12) # 3
+        motor000 = MotorDriver(8)   # 1
+        motor120 = MotorDriver(10)  # 2
+        motor240 = MotorDriver(12)  # 3
 
         super().__init__(motor000, motor120, motor240)
