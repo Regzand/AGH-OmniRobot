@@ -42,17 +42,20 @@ class MotorDriver:
         self._epsilon = epsilon
 
         # setup GPIO
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(channel, GPIO.OUT)
-        self._pwm = GPIO.PWM(channel, frequency)
-        self._pwm.start(0)
-
+        self._setup(channel, frequency)
         self._update_duty_cycle()
 
     def cleanup(self):
         """ Stops the motor and cleans up GPIO configuration for motor channel """
         self._pwm.stop()
         GPIO.cleanup(self._channel)
+
+    def _setup(self, channel: int, frequency: float):
+        """ Initialize GPIO pin and starts PWN """
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(channel, GPIO.OUT)
+        self._pwm = GPIO.PWM(channel, frequency)
+        self._pwm.start(0)
 
     def _update_duty_cycle(self):
         """ Updates PWN duty cycle based on driver configuration. If speed is below epsilon stops motor. """
@@ -154,3 +157,15 @@ class MotorDriver:
     def epsilon(self, epsilon: float):
         self._epsilon = epsilon
         self._update_duty_cycle()
+
+
+class MockMotorDriver(MotorDriver):
+
+    def _setup(self, channel, frequency):
+        pass
+
+    def cleanup(self):
+        pass
+
+    def _update_duty_cycle(self):
+        pass
