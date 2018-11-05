@@ -1,4 +1,4 @@
-from robot import RetardedMovementController
+from ..robot import RetardedMovementController
 import time
 import math
 
