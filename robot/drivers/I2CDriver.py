@@ -84,7 +84,7 @@ class I2CDriver:
         sleep(self._clock_pulse_time / 2.0)
 
         # Sets data free
-        GPIO.setup(self._data_channel, GPIO.IN)
+        GPIO.setup(self._data_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         sleep(self._clock_pulse_time / 2.0)
 
         # Pulls clock up
@@ -174,7 +174,7 @@ class I2CDriver:
 
         sleep(self._clock_pulse_time)
         GPIO.setup(self._clock_channel, GPIO.OUT)
-        GPIO.setup(self._data_channel, GPIO.IN)
+        GPIO.setup(self._data_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
         result = 0
         for i in range(8):
