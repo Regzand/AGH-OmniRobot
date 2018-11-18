@@ -32,8 +32,8 @@ class I2CDriver:
         # enable pull-up resistors on both I2C lines
         # clock is pulled up first to simulate STOP condition on the bus
         GPIO.setmode(GPIO.BOARD)
-        self._clock_up()
-        self._data_up()
+        self._clock_down()
+        self._data_down()
 
     def _signal_up(self, channel):
         """
