@@ -34,6 +34,14 @@ class I2CDriver:
         GPIO.setup(clock_channel, GPIO.OUT)
         sleep(clock_pulse_time / 2.0)
         GPIO.setup(data_channel, GPIO.OUT)
+        GPIO.add_event_detect(clock_channel, GPIO.FALLING,
+                              callback=(lambda x: print('clock down')))
+        GPIO.add_event_detect(clock_channel, GPIO.RISING,
+                              callback=(lambda x: print('clock up')))
+        GPIO.add_event_detect(data_channel, GPIO.FALLING,
+                              callback=(lambda x: print('data down')))
+        GPIO.add_event_detect(data_channel, GPIO.RISING,
+                              callback=(lambda x: print('data down')))
 
     def _send_start_condition(self):
         """
