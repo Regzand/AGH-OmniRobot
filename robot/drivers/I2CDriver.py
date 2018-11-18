@@ -158,7 +158,7 @@ class I2CDriver:
         bin_rep = format(byte, '08b')
         for _, bit in zip(range(8), bin_rep):
 
-            self._set_data(bit)
+            self._set_data(int(bit))
             self._clock_up()
             self._clock_down()
 
