@@ -91,7 +91,7 @@ class I2CDriver:
         GPIO.setup(self._data_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         sleep(self._signal_change_time / 2.0)
         result = GPIO.input(self._data_channel)
-        print("reading data: " + result)
+        print("reading data: " + str(result))
         sleep(self._signal_change_time / 2.0)
         return result
 
