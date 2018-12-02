@@ -32,6 +32,8 @@ class I2CDriver:
         # enable pull-up resistors on both I2C lines
         # clock is pulled up first to simulate STOP condition on the bus
         GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(self._clock_channel, GPIO.OUT)
+        GPIO.setup(self._data_channel, GPIO.OUT)
         self._clock_down()
         self._data_down()
 
@@ -40,14 +42,12 @@ class I2CDriver:
         Sets given GPIO to '1' state.
         """
         sleep(self._signal_change_time / 2.0)
-        GPIO.setup(channel, GPIO.OUT)
         GPIO.output(channel, 1)
         sleep(self._signal_change_time / 2.0)
 
     def _signal_down(self, channel):
         """ Sets given GPIO to '0' state. """
         sleep(self._signal_change_time / 2.0)
-        GPIO.setup(channel, GPIO.OUT)
         GPIO.output(channel, 0)
         sleep(self._signal_change_time / 2.0)
 
@@ -71,6 +71,20 @@ class I2CDriver:
         self._signal_down(self._data_channel)
         print("data: 0")
 
+    def _acquire_data(self):
+        """
+        Sets data line as GPIO output
+        :return:
+        """
+        GPIO.setup(self._data_channel, GPIO.OUT)
+
+    def _release_data(self):
+        """
+        Sets data line as GPIO output
+        :return:
+        """
+        GPIO.setup(self._data_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
     def _set_data(self, value):
         """
         Sets given signal on data line.
@@ -88,13 +102,10 @@ class I2CDriver:
         :return: logic state of data line
         """
         sleep(self._signal_change_time / 2.0)
-        GPIO.setup(self._data_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        sleep(self._signal_change_time / 2.0)
         result = GPIO.input(self._data_channel)
         print("reading data: " + str(result))
         sleep(self._signal_change_time / 2.0)
         return result
-
 
     def _send_start_condition(self):
         """
@@ -127,7 +138,6 @@ class I2CDriver:
         :return: acknowledgement bit value
         """
         # Sets data free
-        GPIO.setup(self._data_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         sleep(self._signal_change_time / 2.0)
 
         self._clock_up()
@@ -147,7 +157,7 @@ class I2CDriver:
         self._clock_up()
         self._clock_down()
 
-    def _send_byte(self, byte):
+    def _send_byte_with_ack(self, byte):
         """
         Sends the byte through the I2C bus
         Start: clock - low
@@ -162,9 +172,12 @@ class I2CDriver:
             self._clock_up()
             self._clock_down()
 
-        return self._check_acknowledgement()
+        self._release_data()
+        result = self._check_acknowledgement()
+        self._acquire_data()
+        return result
 
-    def _read_byte(self):
+    def _read_byte_with_ack(self):
         """
         Reads the byte through the I2C bus
         Start: clock - low
@@ -174,7 +187,7 @@ class I2CDriver:
 
         # Sets data free
         sleep(self._signal_change_time)
-        GPIO.setup(self._data_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        self._release_data()
 
         result = 0
         for i in range(8):
@@ -185,6 +198,7 @@ class I2CDriver:
 
             result = (result << 1) + next_bit
 
+        self._acquire_data()
         self._send_acknowledgement()
 
         return result
