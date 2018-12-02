@@ -225,7 +225,7 @@ class I2CDriver:
         :param register_address: 8-bit register address
         :return: read byte
         """
-        self._send_stop_condition()
+
         self._send_start_condition()
 
         write_address = device_address << 1
@@ -244,8 +244,6 @@ class I2CDriver:
         ack = self._send_byte_with_ack(register_address)
         if ack == 1:
             print("device's register addressing ack: " + str(ack) + ' ' + log_info)
-
-        self._send_stop_condition()
 
         sleep(self._signal_change_time)
 
@@ -298,6 +296,7 @@ class AccelerometerDriver(I2CDriver):
         self._xhigh = xlow + 1 if xhigh is None else xhigh
         self._yhigh = ylow + 1 if yhigh is None else yhigh
         self._zhigh = zlow + 1 if zhigh is None else zhigh
+        self._send_stop_condition()
 
     @staticmethod
     def _get_dec_value(low_byte, high_byte):
@@ -367,6 +366,8 @@ class MagnetometerDriver(I2CDriver):
         self._xhigh = xlow + 1 if xhigh is None else xhigh
         self._yhigh = ylow + 1 if yhigh is None else yhigh
         self._zhigh = zlow + 1 if zhigh is None else zhigh
+        self._send_stop_condition()
+
 
     @staticmethod
     def _get_dec_value(low_byte, high_byte):
