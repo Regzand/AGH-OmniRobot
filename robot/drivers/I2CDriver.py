@@ -208,4 +208,74 @@ class I2CDriver:
         GPIO.cleanup(self._data_channel)
         GPIO.cleanup(self._clock_channel)
 
+    def _read_byte_from_register(self, device_address, register_address):
+        """
+        Reads a single byte from given device's register.
+        :param device_address: 7-bit device address
+        :param register_address: 8-bit register address
+        :return: read byte
+        """
+        self._send_stop_condition()
+        self._send_start_condition()
 
+        read_address = device_address << 1 + 1
+        write_address = device_address << 1
+
+        self._send_stop_condition()
+        self._send_start_condition()
+
+        # addressing slave
+        ack = self._send_byte_with_ack(write_address)
+        print("device addressing ack: " + str(ack))
+
+        # sending register address to slave
+        ack = self._send_byte_with_ack(register_address)
+        print("device's register addressing ack: " + str(ack))
+
+        # repeated start + reading register value from slave
+        self._send_start_condition()
+        ack = self._send_byte_with_ack(read_address)
+        print("device addressing ack: " + str(ack))
+
+        byte = self._read_byte_with_ack()
+        print("byte read: " + str(byte))
+
+        return byte
+
+
+
+
+class MagnetometerDriver(I2CDriver):
+    """
+    Driver for managing magnetometer sensor.
+    """
+
+    def __init__(self,
+                 data_channel: int,
+                 clock_channel: int,
+                 signal_change_time: float,
+                 device_address: int,
+                 xlow: int,
+                 ylow: int,
+                 zlow: int,
+                 xhigh: int = None,
+                 yhigh: int = None,
+                 zhigh: int = None
+                 ):
+        """
+        Creates new magnetometer driver with given
+        device and registers addresses.
+        """
+
+        super().__init__(data_channel, clock_channel, signal_change_time)
+
+        self._device_address = device_address
+        self._xlow = xlow
+        self._ylow = ylow
+        self._zlow = zlow
+        self._xhigh = xlow + 1 if xhigh is None else xhigh
+        self._yhigh = ylow + 1 if yhigh is None else yhigh
+        self._zhigh = zlow + 1 if zhigh is None else zhigh
+
+    def _read_xlow(self):
+        return self._read_byte_from_register(self._device_address, self._xlow)
