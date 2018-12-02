@@ -297,17 +297,23 @@ class AccelerometerDriver(I2CDriver):
         return result
 
     def read_data(self):
-
+        sleep(self._signal_change_time)
         xlow = self._read_byte_from_register(self._device_address, self._xlow, log_info='xlow')
+        sleep(self._signal_change_time)
         xhigh = self._read_byte_from_register(self._device_address, self._xhigh, log_info='xhigh')
         x = MagnetometerDriver._get_dec_value(xlow, xhigh)
 
+        sleep(self._signal_change_time)
         ylow = self._read_byte_from_register(self._device_address, self._ylow, log_info='ylow')
+        sleep(self._signal_change_time)
         yhigh = self._read_byte_from_register(self._device_address, self._yhigh, log_info='yhigh')
         y = MagnetometerDriver._get_dec_value(ylow, yhigh)
 
+        sleep(self._signal_change_time)
         zlow = self._read_byte_from_register(self._device_address, self._zlow, log_info='zlow')
+        sleep(self._signal_change_time)
         zhigh = self._read_byte_from_register(self._device_address, self._zhigh, log_info='zhigh')
+        sleep(self._signal_change_time)
         z = MagnetometerDriver._get_dec_value(zlow, zhigh)
 
         scalar = 2.0
@@ -360,17 +366,23 @@ class MagnetometerDriver(I2CDriver):
         return result
 
     def read_data(self):
-
+        sleep(self._signal_change_time)
         xlow = self._read_byte_from_register(self._device_address, self._xlow, log_info='xlow')
+        sleep(self._signal_change_time)
         xhigh = self._read_byte_from_register(self._device_address, self._xhigh, log_info='xhigh')
         x = MagnetometerDriver._get_dec_value(xlow, xhigh)
 
+        sleep(self._signal_change_time)
         ylow = self._read_byte_from_register(self._device_address, self._ylow, log_info='ylow')
+        sleep(self._signal_change_time)
         yhigh = self._read_byte_from_register(self._device_address, self._yhigh, log_info='yhigh')
         y = MagnetometerDriver._get_dec_value(ylow, yhigh)
 
+        sleep(self._signal_change_time)
         zlow = self._read_byte_from_register(self._device_address, self._zlow, log_info='zlow')
+        sleep(self._signal_change_time)
         zhigh = self._read_byte_from_register(self._device_address, self._zhigh, log_info='zhigh')
+        sleep(self._signal_change_time)
         z = MagnetometerDriver._get_dec_value(zlow, zhigh)
 
         scalar = 2.0
