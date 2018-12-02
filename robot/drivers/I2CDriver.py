@@ -28,6 +28,7 @@ class I2CDriver:
         self._clock_channel = clock_channel
         self._signal_change_time = signal_change_time
 
+        self.cleanup()
 
         # enable pull-up resistors on both I2C lines
         # clock is pulled up first to simulate STOP condition on the bus
