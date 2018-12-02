@@ -248,7 +248,7 @@ class I2CDriver:
 
 
 
-class MagnetometerDriver(I2CDriver):
+class AccelerometerDriver(I2CDriver):
     """
     Driver for managing magnetometer sensor.
     """
@@ -309,3 +309,66 @@ class MagnetometerDriver(I2CDriver):
 
         scalar = 2.0
         return (x/32767.0) * scalar, (y/32767.0) * scalar, (z/32767.0) * scalar
+
+
+class MagnetometerDriver(I2CDriver):
+    """
+    Driver for managing magnetometer sensor.
+    """
+
+    def __init__(self,
+                 data_channel: int,
+                 clock_channel: int,
+                 signal_change_time: float,
+                 device_address: int,
+                 xlow: int,
+                 ylow: int,
+                 zlow: int,
+                 xhigh: int = None,
+                 yhigh: int = None,
+                 zhigh: int = None
+                 ):
+        """
+        Creates new magnetometer driver with given
+        device and registers addresses.
+        """
+
+        super().__init__(data_channel, clock_channel, signal_change_time)
+
+        self._device_address = device_address
+        self._xlow = xlow
+        self._ylow = ylow
+        self._zlow = zlow
+        self._xhigh = xlow + 1 if xhigh is None else xhigh
+        self._yhigh = ylow + 1 if yhigh is None else yhigh
+        self._zhigh = zlow + 1 if zhigh is None else zhigh
+
+    @staticmethod
+    def _get_dec_value(low_byte, high_byte):
+
+        word = low_byte + (high_byte << 8)
+        bin_rep = format(word, '016b')
+        result = 0 if int(bin_rep[0]) == 0 else -1
+
+        for i in bin_rep[1:]:
+            result = result << 1
+            result += int(i)
+
+        return result
+
+    def read_data(self):
+
+        xlow = self._read_byte_from_register(self._device_address, self._xlow)
+        xhigh = self._read_byte_from_register(self._device_address, self._xhigh)
+        x = MagnetometerDriver._get_dec_value(xlow, xhigh)
+
+        ylow = self._read_byte_from_register(self._device_address, self._ylow)
+        yhigh = self._read_byte_from_register(self._device_address, self._yhigh)
+        y = MagnetometerDriver._get_dec_value(ylow, yhigh)
+
+        zlow = self._read_byte_from_register(self._device_address, self._zlow)
+        zhigh = self._read_byte_from_register(self._device_address, self._zhigh)
+        z = MagnetometerDriver._get_dec_value(zlow, zhigh)
+
+        scalar = 2.0
+        return (x/32676.0) * scalar, (y/32676.0) * scalar, (z/32676.0) * scalar
