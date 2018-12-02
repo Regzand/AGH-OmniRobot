@@ -240,6 +240,8 @@ class I2CDriver:
         byte = self._read_byte_with_ack()
         print("byte read: " + str(byte))
 
+        self._send_stop_condition()
+
         return byte
 
 
