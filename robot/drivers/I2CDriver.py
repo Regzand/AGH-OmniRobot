@@ -221,8 +221,9 @@ class I2CDriver:
         read_address = device_address << 1 + 1
         write_address = device_address << 1
 
-        self._send_stop_condition()
-        self._send_start_condition()
+        print("read address: " + str(read_address))
+        print("write address: " + str(write_address))
+
 
         # addressing slave
         ack = self._send_byte_with_ack(write_address)
