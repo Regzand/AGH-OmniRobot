@@ -140,8 +140,15 @@ class I2CDriver:
         # Sets data free
         sleep(self._signal_change_time / 2.0)
 
-        sleep(0.1)
+        GPIO.setup(self._clock_channel, GPIO.IN)
 
+        stretching = True;
+        while stretching:
+            sleep(0.05)
+            if(GPIO.input(self._clock_channel) == 1):
+                stretching = False
+
+        GPIO.setup(self._clock_channel, GPIO.OUT)
         self._clock_up()
         result = self._read_data()
         self._clock_down()
