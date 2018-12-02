@@ -307,4 +307,5 @@ class MagnetometerDriver(I2CDriver):
         zhigh = self._read_byte_from_register(self._device_address, self._zhigh)
         z = MagnetometerDriver._get_dec_value(zlow, zhigh)
 
-        return x, y, z
+        scalar = 2.0
+        return (x/32767.0) * scalar, (y/32767.0) * scalar, (z/32767.0) * scalar
