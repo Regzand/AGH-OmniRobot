@@ -208,7 +208,7 @@ class I2CDriver:
         GPIO.cleanup(self._data_channel)
         GPIO.cleanup(self._clock_channel)
 
-    def _read_byte_from_register(self, device_address, register_address):
+    def _read_byte_from_register(self, device_address, register_address, log_info=''):
         """
         Reads a single byte from given device's register.
         :param device_address: 7-bit device address
@@ -228,18 +228,18 @@ class I2CDriver:
         # addressing slave
         ack = self._send_byte_with_ack(write_address)
         if ack == 1:
-            print("device addressing when writing ack: " + str(ack))
+            print("device addressing when writing ack: " + str(ack) + ' ' + log_info)
 
         # sending register address to slave
         ack = self._send_byte_with_ack(register_address)
         if ack == 1:
-            print("device's register addressing ack: " + str(ack))
+            print("device's register addressing ack: " + str(ack) + ' ' + log_info)
 
         # repeated start + reading register value from slave
         self._send_start_condition()
         ack = self._send_byte_with_ack(read_address)
         if ack == 1:
-            print("device addressing when reading ack: " + str(ack))
+            print("device addressing when reading ack: " + str(ack) + ' ' + log_info)
 
         byte = self._read_byte_with_ack()
         #print("byte read: " + str(byte))
@@ -298,16 +298,16 @@ class AccelerometerDriver(I2CDriver):
 
     def read_data(self):
 
-        xlow = self._read_byte_from_register(self._device_address, self._xlow)
-        xhigh = self._read_byte_from_register(self._device_address, self._xhigh)
+        xlow = self._read_byte_from_register(self._device_address, self._xlow, log_info='xlow')
+        xhigh = self._read_byte_from_register(self._device_address, self._xhigh, log_info='xhigh')
         x = MagnetometerDriver._get_dec_value(xlow, xhigh)
 
-        ylow = self._read_byte_from_register(self._device_address, self._ylow)
-        yhigh = self._read_byte_from_register(self._device_address, self._yhigh)
+        ylow = self._read_byte_from_register(self._device_address, self._ylow, log_info='ylow')
+        yhigh = self._read_byte_from_register(self._device_address, self._yhigh, log_info='yhigh')
         y = MagnetometerDriver._get_dec_value(ylow, yhigh)
 
-        zlow = self._read_byte_from_register(self._device_address, self._zlow)
-        zhigh = self._read_byte_from_register(self._device_address, self._zhigh)
+        zlow = self._read_byte_from_register(self._device_address, self._zlow, log_info='zlow')
+        zhigh = self._read_byte_from_register(self._device_address, self._zhigh, log_info='zhigh')
         z = MagnetometerDriver._get_dec_value(zlow, zhigh)
 
         scalar = 2.0
@@ -361,16 +361,16 @@ class MagnetometerDriver(I2CDriver):
 
     def read_data(self):
 
-        xlow = self._read_byte_from_register(self._device_address, self._xlow)
-        xhigh = self._read_byte_from_register(self._device_address, self._xhigh)
+        xlow = self._read_byte_from_register(self._device_address, self._xlow, log_info='xlow')
+        xhigh = self._read_byte_from_register(self._device_address, self._xhigh, log_info='xhigh')
         x = MagnetometerDriver._get_dec_value(xlow, xhigh)
 
-        ylow = self._read_byte_from_register(self._device_address, self._ylow)
-        yhigh = self._read_byte_from_register(self._device_address, self._yhigh)
+        ylow = self._read_byte_from_register(self._device_address, self._ylow, log_info='ylow')
+        yhigh = self._read_byte_from_register(self._device_address, self._yhigh, log_info='yhigh')
         y = MagnetometerDriver._get_dec_value(ylow, yhigh)
 
-        zlow = self._read_byte_from_register(self._device_address, self._zlow)
-        zhigh = self._read_byte_from_register(self._device_address, self._zhigh)
+        zlow = self._read_byte_from_register(self._device_address, self._zlow, log_info='zlow')
+        zhigh = self._read_byte_from_register(self._device_address, self._zhigh, log_info='zhigh')
         z = MagnetometerDriver._get_dec_value(zlow, zhigh)
 
         scalar = 2.0
