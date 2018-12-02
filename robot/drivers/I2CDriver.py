@@ -228,20 +228,18 @@ class I2CDriver:
         # addressing slave
         ack = self._send_byte_with_ack(write_address)
         if ack == 1:
-            print("XDDDDDDDDDDDDDDDDDDD")
+            print("device addressing when writing ack: " + str(ack))
 
         # sending register address to slave
         ack = self._send_byte_with_ack(register_address)
         if ack == 1:
-            print("XDDDDDDDDDDDDDDDDDDD")
-        #print("device's register addressing ack: " + str(ack))
+            print("device's register addressing ack: " + str(ack))
 
         # repeated start + reading register value from slave
         self._send_start_condition()
         ack = self._send_byte_with_ack(read_address)
         if ack == 1:
-            print("XDDDDDDDDDDDDDDDDDDD")
-        #print("device addressing ack: " + str(ack))
+            print("device addressing when reading ack: " + str(ack))
 
         byte = self._read_byte_with_ack()
         #print("byte read: " + str(byte))
