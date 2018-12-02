@@ -54,22 +54,22 @@ class I2CDriver:
     def _clock_up(self):
         """ Sets clock line to '1' state """
         self._signal_up(self._clock_channel)
-        print("clock: 1")
+        #print("clock: 1")
 
     def _clock_down(self):
         """ Sets clock line to '0' state """
         self._signal_down(self._clock_channel)
-        print("clock: 0")
+        #print("clock: 0")
 
     def _data_up(self):
         """ Sets data line to '1' state """
         self._signal_up(self._data_channel)
-        print("data: 1")
+        #print("data: 1")
 
     def _data_down(self):
         """ Sets data line to '0' state """
         self._signal_down(self._data_channel)
-        print("data: 0")
+        #print("data: 0")
 
     def _acquire_data(self):
         """
@@ -103,7 +103,7 @@ class I2CDriver:
         """
         sleep(self._signal_change_time / 2.0)
         result = GPIO.input(self._data_channel)
-        print("reading data: " + str(result))
+        #print("reading data: " + str(result))
         sleep(self._signal_change_time / 2.0)
         return result
 
@@ -221,25 +221,25 @@ class I2CDriver:
         write_address = device_address << 1
         read_address = write_address + 1
 
-        print("read address: " + str(read_address))
-        print("write address: " + str(write_address))
+        #print("read address: " + str(read_address))
+        #print("write address: " + str(write_address))
 
 
         # addressing slave
         ack = self._send_byte_with_ack(write_address)
-        print("device addressing ack: " + str(ack))
+        #print("device addressing ack: " + str(ack))
 
         # sending register address to slave
         ack = self._send_byte_with_ack(register_address)
-        print("device's register addressing ack: " + str(ack))
+        #print("device's register addressing ack: " + str(ack))
 
         # repeated start + reading register value from slave
         self._send_start_condition()
         ack = self._send_byte_with_ack(read_address)
-        print("device addressing ack: " + str(ack))
+        #print("device addressing ack: " + str(ack))
 
         byte = self._read_byte_with_ack()
-        print("byte read: " + str(byte))
+        #print("byte read: " + str(byte))
 
         self._send_stop_condition()
 
