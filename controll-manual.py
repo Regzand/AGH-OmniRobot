@@ -1,5 +1,5 @@
 import math
-from ..robot import RetardedMovementController
+from robot import RetardedMovementController
 
 mc = RetardedMovementController()
 
