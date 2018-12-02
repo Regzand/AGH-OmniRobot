@@ -218,8 +218,8 @@ class I2CDriver:
         self._send_stop_condition()
         self._send_start_condition()
 
-        read_address = device_address << 1 + 1
         write_address = device_address << 1
+        read_address = write_address + 1
 
         print("read address: " + str(read_address))
         print("write address: " + str(write_address))
