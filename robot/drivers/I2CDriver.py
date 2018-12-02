@@ -289,14 +289,18 @@ class MagnetometerDriver(I2CDriver):
         word -= 2 * sign_bit
         return word
 
+    def read_data(self):
 
-    def _read_xlow(self):
-        return self._read_byte_from_register(self._device_address, self._xlow)
+        xlow = self._read_byte_from_register(self._device_address, self._xlow)
+        xhigh = self._read_byte_from_register(self._device_address, self._xhigh)
+        x = MagnetometerDriver._get_dec_value(xlow, xhigh)
 
-    def _read_xhigh(self):
-        return self._read_byte_from_register(self._device_address, self._xhigh)
+        ylow = self._read_byte_from_register(self._device_address, self._ylow)
+        yhigh = self._read_byte_from_register(self._device_address, self._yhigh)
+        y = MagnetometerDriver._get_dec_value(ylow, yhigh)
 
-    def _readx(self):
-        low = self._read_xlow()
-        high = self._read_xhigh()
-        return MagnetometerDriver._get_dec_value(low, high)
+        zlow = self._read_byte_from_register(self._device_address, self._zlow)
+        zhigh = self._read_byte_from_register(self._device_address, self._zhigh)
+        z = MagnetometerDriver._get_dec_value(zlow, zhigh)
+
+        return x, y, z
