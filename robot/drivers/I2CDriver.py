@@ -284,10 +284,14 @@ class MagnetometerDriver(I2CDriver):
     def _get_dec_value(low_byte, high_byte):
 
         word = low_byte + (high_byte << 8)
-        mask = 1 << 15
-        sign_bit = word & mask
-        word -= 2 * sign_bit
-        return word
+        bin_rep = format(word, '016b')
+        result = 0 if int(bin_rep[0]) == 0 else -1
+
+        for i in bin_rep[1:]:
+            result = result << 1
+            result += int(i)
+
+        return result
 
     def read_data(self):
 
