@@ -245,6 +245,10 @@ class I2CDriver:
         if ack == 1:
             print("device's register addressing ack: " + str(ack) + ' ' + log_info)
 
+        self._send_stop_condition()
+
+        sleep(self._signal_change_time)
+
         # repeated start + reading register value from slave
         self._send_start_condition()
         ack = self._send_byte_with_ack(read_address)
@@ -255,6 +259,8 @@ class I2CDriver:
         #print("byte read: " + str(byte))
 
         self._send_stop_condition()
+
+        sleep(self._signal_change_time)
 
         return byte
 
