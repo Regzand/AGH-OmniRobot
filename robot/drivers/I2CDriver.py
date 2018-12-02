@@ -140,6 +140,8 @@ class I2CDriver:
         # Sets data free
         sleep(self._signal_change_time / 2.0)
 
+        sleep(0.01)
+
         self._clock_up()
         result = self._read_data()
         self._clock_down()
