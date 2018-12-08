@@ -27,3 +27,10 @@ class VL53L1XDriver:
     def stop(self):
         self._is_ranging = False
         self._tof.stop_ranging()
+
+    @property
+    def distance(self):
+        if self._is_ranging:
+            return self._tof.get_distance() / 10.
+
+        return None
