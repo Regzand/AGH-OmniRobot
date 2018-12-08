@@ -1,2 +1,3 @@
 from .MotorDriver import MotorDriver, MockMotorDriver
-from .Lsm303dDriver import Lsm303dDriver
+from .LSM303DDriver import LSM303DDriver
+from .VL53L1XDriver import VL53L1XDriver
