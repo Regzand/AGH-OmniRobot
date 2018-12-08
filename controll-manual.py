@@ -1,9 +1,9 @@
 import math
 from robot import RetardedMovementController
-from robot.drivers import Lsm303dDriver
+from robot.drivers import LSM303DDriver
 
 mc = RetardedMovementController()
-lsm = Lsm303dDriver(0x1d)
+lsm = LSM303DDriver(0x1d)
 
 print("Usage:\n",
       "\tS [-1, 1]\t speed\n",
