@@ -33,7 +33,7 @@ while True:
         ))
         print("mag: {:+06.2f} : {:+06.2f} : {:+06.2f} (angle xy: {:+03.0f})".format(
             *lsm.magnetic_field,
-            lsm.magnetic_field_angle_xy
+            lsm.magnetic_field_angle_xy * (180 / math.pi) + 180
         ))
         print("tmp: {:.2f}".format(lsm.temperature))
 
