@@ -9,6 +9,7 @@ class VL53L1XDriver:
         self._tof = VL53L1X(i2c_bus=i2c_bus, i2c_address=device_address)
         self._ranging_mode = 1
         self._is_ranging = False
+        self._tof.open()
 
     @property
     def ranging_mode(self):
