@@ -21,7 +21,8 @@ vl.start()
 
 
 attack_scaling = 1
-threshold = 30
+search_scaling = 1
+threshold = 15
 
 searching = True
 action = False
@@ -34,18 +35,20 @@ while True:
         action = True
 
     else:
+        if not searching:
+            search_scaling *= -1
         searching = True
         action = False
 
     if searching:
         mc.speed = 0
-        mc.rotation = 0.8
+        mc.rotation = 0.8 * search_scaling
 
     else:
         mc.speed = 0.8 * attack_scaling
         mc.rotation = 0
 
-    sleep(0.2)
+    sleep(0.05)
 
 
 mc.cleanup()

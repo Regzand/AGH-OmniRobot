@@ -33,7 +33,7 @@ while True:
         mc.rotation = float(cmd[1])
 
     if cmd[0] == "m":
-        for i in range(10):
+        for i in range(1):
             print("acc: {:+06.2f} : {:+06.2f} : {:+06.2f} (angle xy: {:+03.1f})".format(
                 *lsm.acceleration,
                 lsm.acceleration_angle_xy * (180 / math.pi) + 180
