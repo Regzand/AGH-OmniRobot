@@ -76,7 +76,9 @@ class MotorDriver:
         duty_cycle += speed * (self.max_duty_cycle - self.min_duty_cycle) / 2
 
         # update PWM
-        self._pwm.ChangeDutyCycle(duty_cycle)
+        self._pwm.stop()
+        self._pwm.start(duty_cycle)
+        #self._pwm.ChangeDutyCycle(duty_cycle)
 
     @property
     def speed(self) -> float:
