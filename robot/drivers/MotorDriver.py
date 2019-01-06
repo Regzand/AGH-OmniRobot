@@ -61,7 +61,7 @@ class MotorDriver:
     def _update_duty_cycle(self):
         """ Updates PWN duty cycle based on driver configuration. If speed is below epsilon stops motor. """
         if abs(self.speed) <= self.epsilon:
-            self._pwm.ChangeDutyCycle((self.max_duty_cycle + self.min_duty_cycle) / 2)
+            self._pwm.ChangeDutyCycle(0)
             return
 
         # calculate speed
@@ -78,7 +78,7 @@ class MotorDriver:
 
         # update PWM
         self._pwm.ChangeDutyCycle((self.max_duty_cycle + self.min_duty_cycle) / 2)
-        sleep(1)
+        sleep(0.2)
         self._pwm.ChangeDutyCycle(duty_cycle)
         #self._pwm.ChangeDutyCycle(duty_cycle)
 
