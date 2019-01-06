@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+from time import sleep
 
 
 class MotorDriver:
@@ -77,6 +78,7 @@ class MotorDriver:
 
         # update PWM
         self._pwm.stop()
+        sleep(0.1)
         self._pwm.start(duty_cycle)
         #self._pwm.ChangeDutyCycle(duty_cycle)
 
