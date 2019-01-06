@@ -77,8 +77,8 @@ class MotorDriver:
         duty_cycle += speed * (self.max_duty_cycle - self.min_duty_cycle) / 2
 
         # update PWM
-        self._pwm.ChangeDutyCycle((self.max_duty_cycle + self.min_duty_cycle) / 2)
-        sleep(0.1)
+        #self._pwm.ChangeDutyCycle((self.max_duty_cycle + self.min_duty_cycle) / 2)
+        #sleep(0.1)
         self._pwm.ChangeDutyCycle(duty_cycle)
         #self._pwm.ChangeDutyCycle(duty_cycle)
 
@@ -89,6 +89,11 @@ class MotorDriver:
 
     @speed.setter
     def speed(self, speed: float):
+        if speed * self._speed < 0:
+            self._pwm.ChangeDutyCycle(
+                (self.max_duty_cycle + self.min_duty_cycle) / 2)
+            sleep(0.1)
+
         self._speed = max(min(speed, 1), -1)
         self._update_duty_cycle()
 
