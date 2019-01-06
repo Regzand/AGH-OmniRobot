@@ -78,7 +78,7 @@ class MotorDriver:
 
         # update PWM
         self._pwm.ChangeDutyCycle((self.max_duty_cycle + self.min_duty_cycle) / 2)
-        sleep(0.2)
+        sleep(0.1)
         self._pwm.ChangeDutyCycle(duty_cycle)
         #self._pwm.ChangeDutyCycle(duty_cycle)
 
