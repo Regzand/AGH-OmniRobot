@@ -81,7 +81,7 @@ class I2CDriver:
 
     def _release_data(self):
         """
-        Sets data line as GPIO output
+        Sets data line as GPIO input (with pull-up resistor)
         :return:
         """
         GPIO.setup(self._data_channel, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -138,18 +138,6 @@ class I2CDriver:
         End: clock - low
         :return: acknowledgement bit value
         """
-        # Sets data free
-        #sleep(self._signal_change_time / 2.0)
-
-        # GPIO.setup(self._clock_channel, GPIO.IN)
-        #
-        # stretching = True
-        # while stretching:
-        #     sleep(0.05)
-        #     if(GPIO.input(self._clock_channel) == 1):
-        #         stretching = False
-        #
-        # GPIO.setup(self._clock_channel, GPIO.OUT, initial=GPIO.HIGH)
         self._clock_up()
         result = self._read_data()
         self._clock_down()
